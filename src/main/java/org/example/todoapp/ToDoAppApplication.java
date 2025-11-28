@@ -1,4 +1,4 @@
-package org.example.ToDoApp;
+package org.example.todoapp;
 
 import java.util.Arrays;
 

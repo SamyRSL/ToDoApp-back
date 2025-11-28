@@ -1,4 +1,4 @@
-package org.example.ToDoApp;
+package org.example.todoapp;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
