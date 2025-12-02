@@ -1,19 +1,24 @@
 package org.example.todoapp.model;
 
-import java.util.Date;
+import jakarta.persistence.*;
 
+import java.time.Instant;
+
+@Entity
+@Table(name = "tasks")
 public class Task {
-    private static Integer counter = 0;
-    private final Integer uid;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String description;
-    private final Date creationDate;
+    private Instant creationDate;
     private boolean completed;
 
+    protected Task() {}
+
     public Task(String description) {
-        this.uid = Task.counter;
-        Task.counter++;
         this.description = description;
-        this.creationDate = new Date();
+        this.creationDate = Instant.now();
         this.completed = false;
     }
 
@@ -33,11 +38,21 @@ public class Task {
         this.completed = completed;
     }
 
-    public Integer getUid() {
-        return uid;
+    public Long getId() {
+        return id;
     }
 
-    public Date getCreationDate() {
+    public Instant getCreationDate() {
         return creationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", creationDate=" + creationDate +
+                ", completed=" + completed +
+                '}';
     }
 }
