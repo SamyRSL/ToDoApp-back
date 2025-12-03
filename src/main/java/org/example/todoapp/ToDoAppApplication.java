@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Bean;
 public class ToDoAppApplication {
     private static final Logger logger = LoggerFactory.getLogger(ToDoAppApplication.class);
 
-	public static void main(String[] args) {
-		SpringApplication.run(ToDoAppApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ToDoAppApplication.class, args);
+    }
 
     @Bean
     public CommandLineRunner demo(ApplicationContext ctx, TaskRepository repository) {
@@ -29,34 +29,32 @@ public class ToDoAppApplication {
             repository.save(new Task("Task 100"));
             repository.save(new Task("Task 101"));
 
-            logger.info("Customers found with findAll():");
+            logger.info("Tasks found with findAll():");
             logger.info("-------------------------------");
-            repository.findAll().forEach(customer -> {
-                logger.info(customer.toString());
+            repository.findAll().forEach(task -> {
+                logger.info(task.toString());
             });
             logger.info("");
 
-            // fetch an individual customer by ID
             Task task = repository.findById(1L);
-            logger.info("Customer found with findById(1L):");
+            logger.info("Task found with findById(1L):");
             logger.info("--------------------------------");
             logger.info(task.toString());
             logger.info("");
 
-            // fetch customers by last name
-            logger.info("Customer found with findByLastName('Bauer'):");
+            logger.info("Task found with findByDescription('Task 11'):");
             logger.info("--------------------------------------------");
             repository.findByDescription("Task 11").forEach(desc -> {
                 logger.info(desc.toString());
             });
             logger.info("");
 
-            System.out.println("Inspecting Beans");
+            /*System.out.println("Inspecting Beans");
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
                 System.out.println(beanName);
-            }
+            }*/
         };
     }
 }

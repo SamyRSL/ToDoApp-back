@@ -1,4 +1,4 @@
-package org.example.todoapp;
+package org.example.todoapp.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
