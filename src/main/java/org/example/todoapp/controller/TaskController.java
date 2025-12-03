@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class TaskController {
 
     private final TaskRepository repository;

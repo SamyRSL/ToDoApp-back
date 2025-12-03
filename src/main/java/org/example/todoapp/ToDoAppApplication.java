@@ -36,7 +36,7 @@ public class ToDoAppApplication {
             });
             logger.info("");
 
-            Task task = repository.findById(1L);
+            Task task = repository.findById(2L);
             logger.info("Task found with findById(1L):");
             logger.info("--------------------------------");
             logger.info(task.toString());
