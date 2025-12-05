@@ -48,13 +48,6 @@ public class ToDoAppApplication {
                 logger.info(desc.toString());
             });
             logger.info("");
-
-            /*System.out.println("Inspecting Beans");
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                System.out.println(beanName);
-            }*/
         };
     }
 }
