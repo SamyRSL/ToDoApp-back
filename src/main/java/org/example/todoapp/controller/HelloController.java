@@ -12,9 +12,4 @@ public class HelloController {
     public String index() {
         return "Hello World!";
     }
-
-    @GetMapping("/v2")
-    public ResponseEntity<String> hello(){
-        return ResponseEntity.ok("Hello WORLD!");
-    }
 }

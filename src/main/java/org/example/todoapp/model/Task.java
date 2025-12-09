@@ -1,20 +1,29 @@
 package org.example.todoapp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 
+@Getter
 @Entity
 @Table(name = "tasks")
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Setter
     private String description;
     private Instant creationDate;
+
+    @Setter
     private boolean completed;
 
-    protected Task() {}
+    protected Task() {
+    }
 
     public Task(String description) {
         this.description = description;
@@ -22,29 +31,6 @@ public class Task {
         this.completed = false;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Instant getCreationDate() {
-        return creationDate;
-    }
 
     @Override
     public String toString() {
