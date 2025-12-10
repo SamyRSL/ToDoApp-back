@@ -8,14 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RestController
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class AuthController {
 
     AuthenticationManager authManager;
@@ -28,8 +26,8 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
-    @PostMapping("/authenticate")
-    public AuthResponse authenticate(@RequestBody @Valid final AuthRequest authRequest) {
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody @Valid final AuthRequest authRequest) {
         try {
             authManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username, authRequest.password));
         } catch (final BadCredentialsException ex) {

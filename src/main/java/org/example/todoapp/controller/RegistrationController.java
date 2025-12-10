@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class RegistrationController {
 
     private final UserRepository userRepository;
@@ -28,7 +28,7 @@ public class RegistrationController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
         if (userRepository.existsByUsername(req.username())) {
-            return ResponseEntity.badRequest().body("Nom d'utilisateur existe déjà");
+            return ResponseEntity.badRequest().body("Ce nom d'utilisateur existe déjà");
         }
 
         Role userRole = roleRepository.findByName("ROLE_USER")

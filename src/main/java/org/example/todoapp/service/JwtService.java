@@ -17,7 +17,7 @@ public class JwtService {
     }
 
     public String generateToken(String username) {
-        return Jwts.builder().subject(username).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis() + 300000)).signWith(jwtKey).compact();
+        return Jwts.builder().subject(username).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis() + 600000)).signWith(jwtKey).compact();
     }
 
     public String extractUsername(String token) {
