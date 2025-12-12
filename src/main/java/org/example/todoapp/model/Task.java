@@ -22,6 +22,11 @@ public class Task {
     @Setter
     private boolean completed;
 
+    @Setter
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private CustomUserDetails user;
+
     protected Task() {
     }
 
@@ -30,7 +35,6 @@ public class Task {
         this.creationDate = Instant.now();
         this.completed = false;
     }
-
 
     @Override
     public String toString() {

@@ -1,18 +1,16 @@
 package org.example.todoapp.controller;
 
-import org.example.todoapp.model.CustomUser;
+import org.example.todoapp.model.CustomUserDetails;
 import org.example.todoapp.model.Role;
 import org.example.todoapp.repository.RoleRepository;
 import org.example.todoapp.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class RegistrationController {
 
     private final UserRepository userRepository;
@@ -34,7 +32,7 @@ public class RegistrationController {
         Role userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Role non trouvé"));
 
-        CustomUser user = new CustomUser();
+        CustomUserDetails user = new CustomUserDetails();
         user.setUsername(req.username());
         user.setPassword(passwordEncoder.encode(req.password()));
         user.setRole(userRole);
