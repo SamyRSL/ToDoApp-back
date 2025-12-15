@@ -49,11 +49,11 @@ public class SecurityConfig {
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp
                                 .policyDirectives(
-                                        "default-src 'self'; " +                        // allow scripts, styles, etc. from same origin
-                                                "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " + // Angular dev sometimes needs unsafe-eval
-                                                "style-src 'self' 'unsafe-inline'; " +         // allow inline styles
-                                                "img-src 'self' data:; " +                     // favicon + inline/base64 images
-                                                "connect-src 'self' http://localhost:4200;"    // API calls from Angular dev server
+                                        "default-src 'self'; " +
+                                                "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+                                                "style-src 'self' 'unsafe-inline'; " +
+                                                "img-src 'self' data:; " +
+                                                "connect-src 'self' http://localhost:4200;"
                                 )));
         return http.build();
     }

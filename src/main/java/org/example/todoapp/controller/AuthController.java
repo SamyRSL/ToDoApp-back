@@ -1,7 +1,7 @@
 package org.example.todoapp.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import org.example.todoapp.model.CustomUserDetails;
 import org.example.todoapp.service.CustomUserDetailsService;
 import org.example.todoapp.service.JwtService;
 import org.springframework.http.HttpStatus;
@@ -27,19 +27,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody @Valid final AuthRequest authRequest) {
+    public CustomUserDetails.LoginResponseDTO login(@RequestBody @Valid final CustomUserDetails.LoginRequestDTO loginRequestDTO) {
         try {
-            authManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username, authRequest.password));
+            authManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.username(), loginRequestDTO.password()));
         } catch (final BadCredentialsException ex) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        return new AuthResponse(jwtService.generateToken(authRequest.username));
+        return new CustomUserDetails.LoginResponseDTO(jwtService.generateToken(loginRequestDTO.username()));
     }
 
-    public record AuthRequest(@NotBlank String username, @NotBlank String password) {
-    }
-
-    public record AuthResponse(String token) {
-    }
 }

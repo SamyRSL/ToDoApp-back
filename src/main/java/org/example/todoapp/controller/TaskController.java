@@ -1,7 +1,6 @@
 package org.example.todoapp.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.example.todoapp.exception.TaskNotFoundException;
 import org.example.todoapp.model.CustomUserDetails;
 import org.example.todoapp.model.Task;
@@ -27,26 +26,29 @@ public class TaskController {
     }
 
     @GetMapping
-    List<Task> all() {
+    public List<Task> all() {
         return repository.findAll();
     }
 
+    @GetMapping("/my")
+    public List<Task.TaskViewDTO> userTasks(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        log.info("Getting tasks from user : {}", customUserDetails.getUsername());
+        return service.getTasks(customUserDetails);
+    }
+
     @PostMapping
-    Task newTask(@RequestBody TaskDTO dto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        log.info("authenticated user is :{}", customUserDetails.getUsername());
+    public Task newTask(@RequestBody Task.TaskNewDTO dto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        log.info("authenticated user is : {}", customUserDetails.getUsername());
         return service.createTask(dto, customUserDetails);
     }
 
     @GetMapping("/{id}")
-    Task one(@PathVariable Long id) {
+    public Task one(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     @DeleteMapping("/{id}")
-    void deleteTask(@PathVariable Long id) {
+    public void deleteTask(@PathVariable Long id) {
         repository.deleteById(id);
-    }
-
-    public record TaskDTO(String description) {
     }
 }

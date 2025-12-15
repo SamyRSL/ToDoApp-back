@@ -1,6 +1,7 @@
 package org.example.todoapp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,5 +41,13 @@ public class CustomUserDetails implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.getName()));
     }
 
+    public record LoginRequestDTO(@NotBlank String username, @NotBlank String password) {
+    }
+
+    public record LoginResponseDTO(String token) {
+    }
+
+    public record RegisterRequestDTO(String username, String password) {
+    }
 }
 

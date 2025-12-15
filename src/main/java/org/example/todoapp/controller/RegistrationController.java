@@ -24,7 +24,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<String> register(@RequestBody CustomUserDetails.RegisterRequestDTO req) {
         if (userRepository.existsByUsername(req.username())) {
             return ResponseEntity.badRequest().body("Ce nom d'utilisateur existe déjà");
         }
@@ -40,8 +40,5 @@ public class RegistrationController {
         userRepository.save(user);
 
         return ResponseEntity.ok("Utilisateur enregistré avec succès");
-    }
-
-    public record RegisterRequest(String username, String password) {
     }
 }

@@ -38,11 +38,16 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", creationDate=" + creationDate +
-                ", completed=" + completed +
-                '}';
+        return "Task{" + "id=" + id + ", description='" + description + '\'' + ", creationDate=" + creationDate + ", completed=" + completed + '}';
+    }
+
+    public TaskViewDTO toDTO() {
+        return new TaskViewDTO(this.getId(), this.getDescription(), this.getCreationDate(), this.isCompleted());
+    }
+
+    public record TaskNewDTO(String description) {
+    }
+
+    public record TaskViewDTO(Long id, String description, Instant creationDate, boolean completed) {
     }
 }
