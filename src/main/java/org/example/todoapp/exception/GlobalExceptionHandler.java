@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(TaskNotFoundException.class)
-    public ResponseEntity<Object> TaskNotFoundHandler(TaskNotFoundException exception) {
+    public ResponseEntity<Object> taskNotFoundHandler(TaskNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 }

@@ -9,22 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
+        this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
+    }
 
     public Task createTask(TaskNewDTO taskNewDTO, CustomUserDetails customUserDetails) {
         String username = customUserDetails.getUsername();
 
-        CustomUserDetails user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+        CustomUserDetails user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
         Task task = new Task(taskNewDTO.description());
         task.setUser(user);
@@ -33,6 +34,6 @@ public class TaskService {
     }
 
     public List<Task.TaskViewDTO> getTasks(CustomUserDetails user) {
-        return taskRepository.findByUserID(user.getId()).stream().map(Task::toDTO).collect(Collectors.toList());
+        return taskRepository.findByUserID(user.getId()).stream().map(Task::toDTO).toList();
     }
 }

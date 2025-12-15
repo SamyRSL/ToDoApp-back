@@ -21,10 +21,6 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        try {
-            return Jwts.parser().verifyWith(jwtKey).build().parseSignedClaims(token).getPayload().getSubject();
-        } catch (ExpiredJwtException e) {
-            throw new RuntimeException("Jeton expiré");
-        }
+        return Jwts.parser().verifyWith(jwtKey).build().parseSignedClaims(token).getPayload().getSubject();
     }
 }

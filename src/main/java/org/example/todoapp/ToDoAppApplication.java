@@ -19,8 +19,6 @@ public class ToDoAppApplication {
 
     @Bean
     public CommandLineRunner demo(ApplicationContext ctx, TaskRepository repository) {
-        return args -> {
-            logger.info("CommandLineRunner");
-        };
+        return args -> logger.info("CommandLineRunner");
     }
 }

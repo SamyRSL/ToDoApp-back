@@ -30,7 +30,7 @@ public class AuthController {
     public CustomUserDetails.LoginResponseDTO login(@RequestBody @Valid final CustomUserDetails.LoginRequestDTO loginRequestDTO) {
         try {
             authManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.username(), loginRequestDTO.password()));
-        } catch (final BadCredentialsException ex) {
+        } catch (final BadCredentialsException _) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
