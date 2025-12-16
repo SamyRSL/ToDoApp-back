@@ -31,15 +31,15 @@ public class TaskController {
     }
 
     @GetMapping("/my")
-    public List<Task.TaskViewDTO> userTasks(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        log.info("Getting tasks from user : {}", customUserDetails.getUsername());
-        return service.getTasks(customUserDetails);
+    public List<Task.TaskViewDTO> userTasks(@AuthenticationPrincipal CustomUserDetails user) {
+        log.info("Getting tasks from user : {}", user.getUsername());
+        return service.getTasks(user);
     }
 
     @PostMapping
-    public Task newTask(@RequestBody Task.TaskNewDTO dto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        log.info("authenticated user is : {}", customUserDetails.getUsername());
-        return service.createTask(dto, customUserDetails);
+    public Task newTask(@RequestBody Task.TaskNewDTO dto, @AuthenticationPrincipal CustomUserDetails user) {
+        log.info("authenticated user is : {}", user.getUsername());
+        return service.createTask(dto, user);
     }
 
     @GetMapping("/{id}")

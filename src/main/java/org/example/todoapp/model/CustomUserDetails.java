@@ -44,7 +44,10 @@ public class CustomUserDetails implements UserDetails {
     public record LoginRequestDTO(@NotBlank String username, @NotBlank String password) {
     }
 
-    public record LoginResponseDTO(String token) {
+    public record TokenDTO(String accessToken) {
+    }
+
+    public record LoginResponse(String accessToken, String refreshToken) {
     }
 
     public record RegisterRequestDTO(String username, String password) {
