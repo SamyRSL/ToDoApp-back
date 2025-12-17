@@ -1,6 +1,7 @@
 package org.example.todoapp.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.example.todoapp.model.CustomUserDetails;
 import org.example.todoapp.model.RefreshToken;
 import org.example.todoapp.service.CustomUserDetailsService;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
+@Slf4j
 @RequestMapping("/api/auth")
 @RestController
 @CrossOrigin(origins = "${cors.allowed-origins}")
@@ -32,10 +34,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public CustomUserDetails.LoginResponse login(@RequestBody @Valid final CustomUserDetails.LoginRequestDTO loginRequestDTO) {
+        log.info("User logging request");
         Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.username(), loginRequestDTO.password()));
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         RefreshToken refreshToken = refreshTokenService.generate(user);
-        return new CustomUserDetails.LoginResponse(jwtService.generateToken(loginRequestDTO.username()), refreshToken.getToken());
+        CustomUserDetails.LoginResponse response = new CustomUserDetails.LoginResponse(jwtService.generateToken(loginRequestDTO.username()), refreshToken.getToken());
+        log.info("Réponse: Access :{}, Refresh : {}", response.accessToken(), response.refreshToken());
+        return response;
     }
 
     @PostMapping("/logout")

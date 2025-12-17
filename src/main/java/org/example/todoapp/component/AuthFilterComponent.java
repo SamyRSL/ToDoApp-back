@@ -46,12 +46,13 @@ public class AuthFilterComponent extends OncePerRequestFilter {
 
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-                chain.doFilter(request, response);
             } catch (ExpiredJwtException e) {
                 logger.error(e);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("{\"error\":\"TOKEN_EXPIRED\"}");
+                return;
             }
         }
+        chain.doFilter(request, response);
     }
 }
