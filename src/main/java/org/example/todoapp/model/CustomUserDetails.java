@@ -52,5 +52,8 @@ public class CustomUserDetails implements UserDetails {
 
     public record RegisterRequestDTO(String username, String password) {
     }
+
+    public record LogoutRequest(String refreshToken) {
+    }
 }
 

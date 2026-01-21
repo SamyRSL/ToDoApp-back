@@ -44,18 +44,23 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String header) {
-        String refreshToken = header.substring(7);
-        refreshTokenService.revokeByToken(refreshToken);
+    public ResponseEntity<Void> logout(@RequestBody CustomUserDetails.LogoutRequest request) {
+        log.info("Logging user out");
+        refreshTokenService.revokeByToken(request.refreshToken());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/refresh")
-    public CustomUserDetails.TokenDTO refresh(@RequestBody String refreshToken) {
+    public ResponseEntity<?> refresh(@RequestBody String refreshToken) {
 
         RefreshToken token = refreshTokenService.verify(refreshToken);
+
+        if (token == null) {
+            return ResponseEntity.badRequest().body("Refresh token invalid");
+        }
+
         String newAccessToken = jwtService.generateToken(token.getUser().getUsername());
-        return new CustomUserDetails.TokenDTO(newAccessToken);
+        return ResponseEntity.ok(new CustomUserDetails.TokenDTO(newAccessToken));
     }
 
 }

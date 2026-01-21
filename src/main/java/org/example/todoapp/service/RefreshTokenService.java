@@ -1,5 +1,6 @@
 package org.example.todoapp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.todoapp.exception.ExpiredRefreshToken;
 import org.example.todoapp.model.CustomUserDetails;
 import org.example.todoapp.model.RefreshToken;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class RefreshTokenService {
 
@@ -31,13 +34,19 @@ public class RefreshTokenService {
     }
 
     public RefreshToken verify(String token) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Refresh token invalide"));
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByToken(token);
 
-        if (refreshToken.getExpirationDate().isBefore(Instant.now())) {
-            refreshTokenRepository.delete(refreshToken);
-            throw new ExpiredRefreshToken();
+        if (refreshToken.isEmpty()) {
+            return null;
         }
-        return refreshToken;
+
+        if (refreshToken.get().getExpirationDate().isBefore(Instant.now())) {
+            refreshTokenRepository.delete(refreshToken.get());
+            log.info("An expired refresh token has been deleted");
+            return null;
+        }
+
+        return refreshToken.get();
     }
 
     public void revoke(CustomUserDetails user) {
