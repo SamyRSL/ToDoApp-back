@@ -33,10 +33,12 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(token);
     }
 
-    public RefreshToken verify(String token) {
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByToken(token);
+    public RefreshToken verify(CustomUserDetails.TokenDTO token) {
+        log.info("Verifying{}", token);
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByToken(token.token());
 
         if (refreshToken.isEmpty()) {
+            log.info("Token not found in database");
             return null;
         }
 

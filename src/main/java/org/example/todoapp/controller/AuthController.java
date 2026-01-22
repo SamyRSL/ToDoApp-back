@@ -51,7 +51,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody String refreshToken) {
+    public ResponseEntity<?> refresh(@RequestBody CustomUserDetails.TokenDTO refreshToken) {
 
         RefreshToken token = refreshTokenService.verify(refreshToken);
 
@@ -59,7 +59,9 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Refresh token invalid");
         }
 
+        log.info("Generating new access token for {}", token.getUser().getUsername());
         String newAccessToken = jwtService.generateToken(token.getUser().getUsername());
+        log.info("New token : {}", newAccessToken);
         return ResponseEntity.ok(new CustomUserDetails.TokenDTO(newAccessToken));
     }
 
