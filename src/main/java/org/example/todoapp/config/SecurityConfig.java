@@ -1,8 +1,7 @@
 package org.example.todoapp.config;
 
-import io.jsonwebtoken.security.Keys;
 import org.example.todoapp.component.AuthFilterComponent;
-import org.springframework.beans.factory.annotation.Value;
+import org.example.todoapp.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,13 +11,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 
 @Configuration
 @EnableMethodSecurity
@@ -26,11 +20,8 @@ public class SecurityConfig {
 
     private final AuthFilterComponent authFilterComponent;
 
-    @Value("${jwt.secret}")
-    private String secret;
-
-    public SecurityConfig(AuthFilterComponent authFilterComponent) {
-        this.authFilterComponent = authFilterComponent;
+    public SecurityConfig(JwtService jwtService) {
+        this.authFilterComponent = new AuthFilterComponent(jwtService);
     }
 
     @Bean
@@ -50,7 +41,7 @@ public class SecurityConfig {
                         .contentSecurityPolicy(csp -> csp
                                 .policyDirectives(
                                         "default-src 'self'; " +
-                                        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+                                                "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
                                                 "style-src 'self' 'unsafe-inline'; " +
                                                 "img-src 'self' data:; " + "connect-src 'self' http://localhost:4200;")));
         return http.build();
@@ -59,16 +50,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public SecretKey jwtKey() {
-        // Ensure secret is at least 32 bytes for HS256
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
     }
 }

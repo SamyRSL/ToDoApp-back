@@ -8,8 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
+@EnableWebSecurity(debug = true)
 public class ToDoAppApplication {
     private static final Logger logger = LoggerFactory.getLogger(ToDoAppApplication.class);
 

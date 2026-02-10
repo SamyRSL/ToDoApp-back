@@ -1,12 +1,13 @@
 package org.example.todoapp.service;
 
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class JwtService {
@@ -15,24 +16,32 @@ public class JwtService {
     private Long jwtTokenDurationMs;
 
     private final SecretKey jwtKey;
+    private final JwtParser parser;
 
     public JwtService(SecretKey jwtKey) {
         this.jwtKey = jwtKey;
+        this.parser = Jwts.parser().verifyWith(jwtKey).build();
     }
 
     public String generateToken(String username) {
         return Jwts.builder().subject(username).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis() + jwtTokenDurationMs)).signWith(jwtKey).compact();
     }
 
-    public Optional<String> extractUsername(String token) {
-        if (token == null || token.isBlank()) {
-            return Optional.empty();
-        }
+    public String extractUsername(String token) {
+        return parser.parseSignedClaims(token).getPayload().getSubject();
+    }
 
-        if (token.chars().filter(c -> c == '.').count() != 2) {
-            return Optional.empty();
+    public List<String> extractRoles(String token) {
+        Object roles = parser.parseSignedClaims(token)
+                .getPayload()
+                .get("roles");
+        if (roles instanceof List<?> list) {
+            return list.stream().map(Object::toString).toList();
         }
+        return List.of();
+    }
 
-        return Jwts.parser().verifyWith(jwtKey).build().parseSignedClaims(token).getPayload().getSubject().describeConstable();
+    public void validate(String token) {
+        parser.parseSignedClaims(token);
     }
 }
