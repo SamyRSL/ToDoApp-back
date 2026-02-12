@@ -10,13 +10,11 @@ import org.example.todoapp.service.CustomUserDetailsService;
 import org.example.todoapp.service.JwtService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 public class AuthFilterComponent extends OncePerRequestFilter {
 
@@ -41,12 +39,6 @@ public class AuthFilterComponent extends OncePerRequestFilter {
                 String username = jwtService.extractUsername(jwt);
 
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
-
-                    List<String> roles = jwtService.extractRoles(jwt);
-                    List<SimpleGrantedAuthority> authorities =
-                            roles.stream()
-                                    .map(r -> new SimpleGrantedAuthority("ROLE_" + r))
-                                    .toList();
 
                     UserDetails userDetails =
                             customUserDetailsService.loadUserByUsername(username);

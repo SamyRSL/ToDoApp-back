@@ -1,12 +1,28 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/springboot_todo_db
-    username: app_user
-    password: password
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: test
+    password: test
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: false
+    liquibase:
+      enabled: false
+
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+      org.testcontainers: INFO
 
   sql:
     init:

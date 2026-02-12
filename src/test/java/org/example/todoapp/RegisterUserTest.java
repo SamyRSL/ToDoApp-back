@@ -3,6 +3,7 @@ package org.example.todoapp;
 import org.example.todoapp.model.CustomUserDetails;
 import org.example.todoapp.repository.UserRepository;
 import org.example.todoapp.service.CustomUserDetailsService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,13 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class RegisterUserTest {
+class RegisterUserTest extends BaseIntegrationTest {
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     UserRepository userRepository;
+
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+    }
 
     @Test
     void registerUserTest() {
