@@ -1,6 +1,7 @@
 package org.example.todoapp.config;
 
 import org.example.todoapp.component.AuthFilterComponent;
+import org.example.todoapp.service.CustomUserDetailsService;
 import org.example.todoapp.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +21,8 @@ public class SecurityConfig {
 
     private final AuthFilterComponent authFilterComponent;
 
-    public SecurityConfig(JwtService jwtService) {
-        this.authFilterComponent = new AuthFilterComponent(jwtService);
+    public SecurityConfig(JwtService jwtService, CustomUserDetailsService customUserDetailsService) {
+        this.authFilterComponent = new AuthFilterComponent(jwtService, customUserDetailsService);
     }
 
     @Bean

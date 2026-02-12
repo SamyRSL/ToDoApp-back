@@ -1,8 +1,9 @@
 package org.example.todoapp;
 
+import org.example.todoapp.model.Role;
+import org.example.todoapp.repository.RoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.example.todoapp.repository.TaskRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +21,13 @@ public class ToDoAppApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(ApplicationContext ctx, TaskRepository repository) {
-        return args -> logger.info("CommandLineRunner");
+    public CommandLineRunner demo(ApplicationContext ctx, RoleRepository roleRepository) {
+        return args -> {
+            if (roleRepository.count() == 0) {
+                roleRepository.save(new Role("ROLE_ADMIN"));
+                roleRepository.save(new Role("ROLE_USER"));
+            }
+            logger.info("CommandLineRunner");
+        };
     }
 }

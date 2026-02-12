@@ -6,11 +6,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.todoapp.service.CustomUserDetailsService;
 import org.example.todoapp.service.JwtService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -19,9 +21,11 @@ import java.util.List;
 public class AuthFilterComponent extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public AuthFilterComponent(JwtService jwtService) {
+    public AuthFilterComponent(JwtService jwtService, CustomUserDetailsService customUserDetailsService) {
         this.jwtService = jwtService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -44,8 +48,13 @@ public class AuthFilterComponent extends OncePerRequestFilter {
                                     .map(r -> new SimpleGrantedAuthority("ROLE_" + r))
                                     .toList();
 
+                    UserDetails userDetails =
+                            customUserDetailsService.loadUserByUsername(username);
+
                     Authentication auth = new UsernamePasswordAuthenticationToken(
-                            username, null, authorities
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
                     );
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }

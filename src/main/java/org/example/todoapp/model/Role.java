@@ -18,4 +18,11 @@ public class Role implements Serializable {
     @Setter
     @Column(nullable = false, unique = true)
     private String name;
+
+    protected Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
 }
