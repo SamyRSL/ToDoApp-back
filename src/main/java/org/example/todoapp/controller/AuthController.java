@@ -39,7 +39,7 @@ public class AuthController {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         RefreshToken refreshToken = refreshTokenService.generate(user);
         CustomUserDetails.LoginResponse response = new CustomUserDetails.LoginResponse(jwtService.generateToken(loginRequestDTO.username()), refreshToken.getToken());
-        log.info("Réponse: Access :{}, Refresh : {}", response.accessToken(), response.refreshToken());
+        log.info("Answer: Access :{}, Refresh : {}", response.accessToken(), response.refreshToken());
         return response;
     }
 
